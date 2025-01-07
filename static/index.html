@@ -24,13 +24,10 @@
   }
 </script>
 <div style="position: relative; width: 300px; height: 30px; margin: 10px">
-  <form action="https://localhost:3001/submit" method="POST">
+  <form action="https://localhost:3001/submit" method="PUT">
     <combo-box
-            id="combobox"
             items='[{"id":"item1", "label":"The first item", "disabled": false, "selected": false}, {"id":"item2", "label":"The second item", "disabled": false, "selected": false}]'
-            on-change="handleSuccess"
-            disabled="false"
-            control-name="payloadKey"
+            control-name="asdf"
     ></combo-box>
     <button type="submit" >Submit</button>
   </form>

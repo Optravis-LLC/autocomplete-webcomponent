@@ -15,8 +15,8 @@ import "../index.css";
 export interface AutocompleteProps {
   placeholder?: string;
   items: Array<AutocompleteItemModel>;
-  onChange: (values: Array<AutocompleteItemModel>) => void;
-  disabled: boolean;
+  onChange?: (values: Array<AutocompleteItemModel>) => void;
+  disabled?: boolean;
   maximumItemsToRender?: number;
   keepSelectOrder?: boolean;
   initSelectedItems?: Array<AutocompleteItemModel>;
@@ -25,6 +25,7 @@ export interface AutocompleteProps {
 }
 
 export const AutocompleteComponent = (props: AutocompleteProps) => {
+  const disabled = props.disabled ?? false;
   const stylesheetUrl = props.stylesheetUrl ?? "./webcomponent.css";
 
   const [isOpen, setIsOpen] = useState(false);
@@ -55,10 +56,10 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
     setSelectedItems(newSelectedItems);
 
     if (!props.keepSelectOrder) {
-      props.onChange(updatedItems);
+      props.onChange && props.onChange(updatedItems);
     } else {
       const unSelectedItems = updatedItems.filter((item) => !item.selected);
-      props.onChange([...newSelectedItems, ...unSelectedItems]);
+      props.onChange && props?.onChange([...newSelectedItems, ...unSelectedItems]);
     }
 
     setIsFocused(true);
@@ -80,14 +81,14 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
     }
 
     if (!props.keepSelectOrder) {
-      props.onChange(updatedItems);
+      props.onChange && props.onChange(updatedItems);
     } else {
       const unSelectedItems = updatedItems.filter((item) => !item.selected);
-      props.onChange([...newSelectedItems, ...unSelectedItems]);
+      props.onChange && props.onChange([...newSelectedItems, ...unSelectedItems]);
     }
   };
 
-  if (props.disabled) {
+  if (disabled) {
     const selectedItems = props.items.filter((item) => item.selected);
     if (selectedItems.length > 0) {
       const disabledLabel = selectedItems.map((item) => item.label).join(", ");
@@ -102,7 +103,7 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
   const formValues = props.items
     .filter((item) => item.selected)
     .map((item) => item.id)
-    .join(", ");
+    .join(",");
 
   return (
     <>
@@ -112,7 +113,7 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
         ref={autoCompleteRef}
         onClick={() => {
           setIsFocused(true);
-          if (!props.disabled) {
+          if (!disabled) {
             setIsOpen(true);
             inputRef.current?.focus();
           }
@@ -123,13 +124,13 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
           className={classNames(
             "w-full border-gray-300 shadow-sm border rounded-md min-h-[38px] relative cursor-pointer",
             isFocused ? "border-gray-400 border-2 -m-[1px]" : "border-gray-300",
-            props.disabled ? "" : "hover:bg-gray-100",
+            disabled ? "" : "hover:bg-gray-100",
           )}
         >
           {selectedItemsToShowInBadges.map((item) => (
-            <BadgeComponent key={item.id} item={item} onRemove={removeItem} disabled={props.disabled} />
+            <BadgeComponent key={item.id} item={item} onRemove={removeItem} disabled={disabled} />
           ))}
-          {!props.disabled && (
+          {!disabled && (
             <span className="h-[36px] w-[240px] inline-block">
               <SimpleTextInputComponent
                 ref={inputRef}
@@ -149,7 +150,7 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
         </div>
 
         <div className="w-full">
-          {!props.disabled && isOpen && (
+          {!disabled && isOpen && (
             <AutocompleteListComponent
               key="list"
               searchTerm={searchTerm}
