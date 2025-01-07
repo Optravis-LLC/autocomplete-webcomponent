@@ -1,0 +1,3 @@
+[submodule "tax-platform-infra"]
+	path = tax-platform-infra
+	url = https://github.com/Optravis-LLC/tax-platform-infra.git

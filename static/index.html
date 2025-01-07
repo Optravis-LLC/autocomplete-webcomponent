@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <style>
+      @font-face {
+        font-family: "Inter";
+        src: url("./inter.ttf");
+      }
+    </style>
+    <script src="./autocomplete.mjs" type="module"></script>
+
+    <title>Webcomponents</title>
+  </head>
+  <body>
+    <script>
+      let items = [{ "id": "test", "label": "Test entry", "disabled": false, "selected": false }];
+
+      function handleSuccess(newItems){
+        console.log("got new items", newItems)
+        const element = document.getElementById("combobox");
+        console.log("found element", element)
+        element.items = newItems;
+      }
+    </script>
+    <div style="position: relative; width: 300px; height: 30px; margin: 10px">
+    <combo-box
+      id="combobox"
+      items='[{"id":"test", "label":"Test entry", "disabled": false, "selected": false }]'
+      on-change="handleSuccess"
+      disabled="false"
+    ></combo-box>
+    </div>
+  </body>
+</html>

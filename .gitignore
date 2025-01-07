@@ -1,0 +1,23 @@
+# IDE
+/.idea
+/.vscode
+*.iml
+
+# Operating systems
+.DS_Store
+.trashes
+*.db
+
+# Nodes tools
+/node_modules
+/build
+
+# Playwright
+/test-results/
+/tests-out
+/playwright-report/
+/playwright/.cache/
+/testing/**/*.js
+
+# Local Env
+.env.development.local
