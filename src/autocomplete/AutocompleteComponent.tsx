@@ -3,6 +3,7 @@ import { AutocompleteListComponent } from "./components/AutocompleteListComponen
 import { BadgeComponent } from "./components/BadgeComponent";
 import { DisabledTextComponent } from "./components/DisabledTextComponent";
 import { SimpleTextInputComponent } from "./components/SimpleTextInputComponent";
+import { SubmittableContentComponent } from "./components/SubmittableContentComponent";
 import { useDetectOutsideClick } from "./hooks/useDetectOutsideClick";
 import { AutocompleteItemModel } from "./models/AutocompleteItemModel";
 import { classNames } from "./utils/StylingUtil";
@@ -20,6 +21,7 @@ export interface AutocompleteProps {
   keepSelectOrder?: boolean;
   initSelectedItems?: Array<AutocompleteItemModel>;
   stylesheetUrl?: string;
+  controlName: string;
 }
 
 export const AutocompleteComponent = (props: AutocompleteProps) => {
@@ -78,11 +80,9 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
     }
 
     if (!props.keepSelectOrder) {
-      console.log("trigger change", 1);
       props.onChange(updatedItems);
     } else {
       const unSelectedItems = updatedItems.filter((item) => !item.selected);
-      console.log("trigger change", 2);
       props.onChange([...newSelectedItems, ...unSelectedItems]);
     }
   };
@@ -99,9 +99,15 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
 
   const selectedItemsToShowInBadges = props.keepSelectOrder ? selectedItems : props.items.filter((item) => item.selected);
 
+  const formValues = props.items
+    .filter((item) => item.selected)
+    .map((item) => item.id)
+    .join(", ");
+
   return (
     <>
       <style>{"@import '" + stylesheetUrl + "';"}</style>
+      <SubmittableContentComponent name={props.controlName} value={formValues} />
       <div
         ref={autoCompleteRef}
         onClick={() => {

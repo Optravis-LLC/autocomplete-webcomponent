@@ -19,18 +19,23 @@
 
       function handleSuccess(newItems){
         console.log("got new items", newItems)
-        const element = document.getElementById("combobox");
-        console.log("found element", element)
-        element.items = newItems;
+        // const element = document.getElementById("combobox");
+        // console.log("found element", element)
+        // element.items = newItems;
       }
     </script>
     <div style="position: relative; width: 300px; height: 30px; margin: 10px">
-    <combo-box
+      <form action="https://localhost:3001/submit" method="POST">
+        <combo-box
       id="combobox"
-      items='[{"id":"test", "label":"Test entry", "disabled": false, "selected": false }]'
+      items='[{"id":"item1", "label":"The first item", "disabled": false, "selected": false}, {"id":"item2", "label":"The second item", "disabled": false, "selected": false}]'
       on-change="handleSuccess"
       disabled="false"
+      control-name="payloadKey"
     ></combo-box>
+        <button type="submit" >Submit</button>
+      </form>
+
     </div>
   </body>
 </html>

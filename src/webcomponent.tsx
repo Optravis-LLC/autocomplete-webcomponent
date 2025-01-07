@@ -2,7 +2,6 @@ import r2wc from "@r2wc/react-to-web-component";
 import { AutocompleteComponent } from "./autocomplete/AutocompleteComponent";
 
 const AutoCompleteConstructor = r2wc(AutocompleteComponent, {
-  shadow: "open",
   props: {
     items: "json",
     disabled: "boolean",
@@ -12,6 +11,7 @@ const AutoCompleteConstructor = r2wc(AutocompleteComponent, {
     maximumItemsToRender: "number",
     placeholder: "string",
     stylesheetUrl: "string",
+    controlName: "string",
   },
 });
 
