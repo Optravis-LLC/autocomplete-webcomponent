@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <style>
-      @font-face {
-        font-family: "Inter";
-        src: url("./inter.ttf");
-      }
-    </style>
-    <script src="./autocomplete.mjs" type="module"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <style>
+    @font-face {
+      font-family: "Inter";
+      src: url("./inter.ttf");
+    }
+  </style>
+  <script src="./autocomplete.mjs" type="module"></script>
+  <title>Webcomponents</title>
+</head>
+<body>
+<script>
+  let items = [{ "id": "test", "label": "Test entry", "disabled": false, "selected": false }];
 
-    <title>Webcomponents</title>
-  </head>
-  <body>
-    <script>
-      let items = [{ "id": "test", "label": "Test entry", "disabled": false, "selected": false }];
-
-      function handleSuccess(newItems){
-        console.log("got new items", newItems)
-        // const element = document.getElementById("combobox");
-        // console.log("found element", element)
-        // element.items = newItems;
-      }
-    </script>
-    <div style="position: relative; width: 300px; height: 30px; margin: 10px">
-      <form action="https://localhost:3001/submit" method="POST">
-        <combo-box
-      id="combobox"
-      items='[{"id":"item1", "label":"The first item", "disabled": false, "selected": false}, {"id":"item2", "label":"The second item", "disabled": false, "selected": false}]'
-      on-change="handleSuccess"
-      disabled="false"
-      control-name="payloadKey"
+  function handleSuccess(newItems){
+    console.log("got new items", newItems)
+    // const element = document.getElementById("combobox");
+    // console.log("found element", element)
+    // element.items = newItems;
+  }
+</script>
+<div style="position: relative; width: 300px; height: 30px; margin: 10px">
+  <form action="https://localhost:3001/submit" method="POST">
+    <combo-box
+            id="combobox"
+            items='[{"id":"item1", "label":"The first item", "disabled": false, "selected": false}, {"id":"item2", "label":"The second item", "disabled": false, "selected": false}]'
+            on-change="handleSuccess"
+            disabled="false"
+            control-name="payloadKey"
     ></combo-box>
-        <button type="submit" >Submit</button>
-      </form>
-
-    </div>
-  </body>
+    <button type="submit" >Submit</button>
+  </form>
+</div>
+</body>
 </html>
