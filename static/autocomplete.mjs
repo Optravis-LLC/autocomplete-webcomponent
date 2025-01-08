@@ -5815,7 +5815,7 @@ function kn(...e) {
 }
 const om = (e) => {
   const t = e.maximumItemsToRender || 20, [n, r] = P.useState(t), l = e.items.filter((s) => s.label.toLowerCase().indexOf(e.searchTerm.toLowerCase()) !== -1), o = l.length > n, i = o ? l.slice(0, n) : l, u = l.length > 0;
-  return !e.isOpen || !u ? /* @__PURE__ */ O.jsx(O.Fragment, {}) : /* @__PURE__ */ O.jsxs("div", { className: "absolute w-full grid border-gray-300 shadow-sm border rounded-md text-sm py-1 mt-px z-50 overflow-hidden", "data-testid": "AutocompleteList", children: [
+  return !e.isOpen || !u ? /* @__PURE__ */ O.jsx(O.Fragment, {}) : /* @__PURE__ */ O.jsxs("div", { className: "absolute w-full grid border-gray-300 shadow-sm border rounded-md text-sm my-1 mt-px z-50 overflow-hidden", "data-testid": "AutocompleteList", children: [
     e.actionItem && /* @__PURE__ */ O.jsx(
       "div",
       {
@@ -5831,7 +5831,7 @@ const om = (e) => {
       "div",
       {
         className: kn(
-          "block pl-4 my-1 select-none bg-white",
+          "block pl-4 py-1 select-none bg-white",
           !s.selected && !s.disabled ? "cursor-pointer hover:bg-msg-red hover:text-gray-50 text-gray-700" : "text-gray-300"
         ),
         onClick: () => {

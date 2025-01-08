@@ -26,7 +26,7 @@ export const AutocompleteListComponent = (props: AutocompleteListProps) => {
   if (!props.isOpen || !isListVisible) return <></>;
 
   return (
-    <div className="absolute w-full grid border-gray-300 shadow-sm border rounded-md text-sm py-1 mt-px z-50 overflow-hidden" data-testid="AutocompleteList">
+    <div className="absolute w-full grid border-gray-300 shadow-sm border rounded-md text-sm my-1 mt-px z-50 overflow-hidden" data-testid="AutocompleteList">
       {props.actionItem && (
         <div
           key="action-item"
@@ -44,7 +44,7 @@ export const AutocompleteListComponent = (props: AutocompleteListProps) => {
         return (
           <div
             className={classNames(
-              "block pl-4 my-1 select-none bg-white",
+              "block pl-4 py-1 select-none bg-white",
               !item.selected && !item.disabled ? "cursor-pointer hover:bg-msg-red hover:text-gray-50 text-gray-700" : "text-gray-300",
             )}
             key={item.id}
