@@ -27,6 +27,7 @@ export const AutocompleteListComponent = (props: AutocompleteListProps) => {
 
   if (!props.isOpen || !isListVisible) return <></>;
 
+  console.log("render with ", props.selectedItemIndex);
   return (
     <div
       className="absolute w-full grid border-gray-300 shadow-sm border rounded-md text-sm my-1 mt-px z-50 overflow-hidden"
@@ -36,9 +37,9 @@ export const AutocompleteListComponent = (props: AutocompleteListProps) => {
         return (
           <div
             className={classNames(
-              !item.selected && props.selectedItemIndex === displayedItemIndex ? "bg-msg-red text-gray-50" : "",
-              "block pl-4 py-1 select-none bg-white",
-              !item.selected && !item.disabled ? "cursor-pointer text-gray-700" : "text-gray-300",
+              !item.selected && props.selectedItemIndex === displayedItemIndex ? "bg-msg-red text-gray-50" : "bg-white",
+              "block pl-4 py-1 select-none ",
+              item.selected || item.disabled ? "text-gray-300" : "cursor-pointer",
             )}
             key={item.id}
             onClick={() => {
