@@ -5815,7 +5815,7 @@ function Wt(...e) {
 }
 const om = (e) => {
   const t = e.maximumItemsToRender || 20, [n, r] = _.useState(t), l = e.items.filter((s) => s.label.toLowerCase().indexOf(e.searchTerm.toLowerCase()) !== -1), o = l.length > n, i = o ? l.slice(0, n) : l, u = l.length > 0;
-  return !e.isOpen || !u ? /* @__PURE__ */ R.jsx(R.Fragment, {}) : /* @__PURE__ */ R.jsxs(
+  return !e.isOpen || !u ? /* @__PURE__ */ R.jsx(R.Fragment, {}) : (console.log("render with ", e.selectedItemIndex), /* @__PURE__ */ R.jsxs(
     "div",
     {
       className: "absolute w-full grid border-gray-300 shadow-sm border rounded-md text-sm my-1 mt-px z-50 overflow-hidden",
@@ -5825,9 +5825,9 @@ const om = (e) => {
           "div",
           {
             className: Wt(
-              !s.selected && e.selectedItemIndex === a ? "bg-msg-red text-gray-50" : "",
-              "block pl-4 py-1 select-none bg-white",
-              !s.selected && !s.disabled ? "cursor-pointer text-gray-700" : "text-gray-300"
+              !s.selected && e.selectedItemIndex === a ? "bg-msg-red text-gray-50" : "bg-white",
+              "block pl-4 py-1 select-none ",
+              s.selected || s.disabled ? "text-gray-300" : "cursor-pointer"
             ),
             onClick: () => {
               if (e.setItemToRemove(void 0), !s.disabled)
@@ -5854,7 +5854,7 @@ const om = (e) => {
         )
       ]
     }
-  );
+  ));
 }, im = (e) => /* @__PURE__ */ R.jsxs(
   "span",
   {
