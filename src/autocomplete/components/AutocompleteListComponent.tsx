@@ -10,6 +10,8 @@ interface AutocompleteListProps {
   onAdd: (item: AutocompleteItemModel) => void;
   isOpen: boolean;
   maximumItemsToRender?: number;
+  itemToRemove?: AutocompleteItemModel;
+  setItemToRemove: (newItemToRemove?: AutocompleteItemModel) => void;
 }
 
 export const AutocompleteListComponent = (props: AutocompleteListProps) => {
@@ -40,11 +42,15 @@ export const AutocompleteListComponent = (props: AutocompleteListProps) => {
             )}
             key={item.id}
             onClick={() => {
+              props.setItemToRemove(undefined);
               if (!item.disabled) {
                 return props.onAdd(item);
               }
             }}
-            onMouseEnter={() => props.setSelectedIndex(displayedItemIndex)}
+            onMouseEnter={() => {
+              props.setSelectedIndex(displayedItemIndex);
+              props.setItemToRemove(undefined);
+            }}
             onMouseLeave={() => props.setSelectedIndex(undefined)}
           >
             {item.label}

@@ -5,8 +5,8 @@ import { AutocompleteItemModel } from "../autocomplete/models/AutocompleteItemMo
 
 export const WebcomponentWrapper = () => {
   const [items, setItems] = useState<Array<AutocompleteItemModel>>([
-    { id: "A", label: "A", disabled: false, selected: false },
-    { id: "B", label: "B", disabled: false, selected: false },
+    { id: "A", label: "A Test", disabled: false, selected: false },
+    { id: "B", label: "B Test", disabled: false, selected: false },
     { id: "C", label: "C", disabled: false, selected: false },
     { id: "D", label: "D", disabled: false, selected: false },
     { id: "E", label: "E", disabled: false, selected: false },

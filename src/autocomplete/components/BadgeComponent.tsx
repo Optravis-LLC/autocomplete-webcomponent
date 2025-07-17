@@ -5,22 +5,36 @@ interface BadgeProps {
   item: AutocompleteItemModel;
   onRemove: (id: AutocompleteItemModel) => void;
   disabled: boolean;
+  selected: boolean;
+  setItemToRemove: (item?: AutocompleteItemModel) => void;
+  setSelectedItemIndex: (index?: number) => void;
 }
 
 export const BadgeComponent = (props: BadgeProps) => {
   return (
     <span
       className={classNames(
-        "inline-flex h-7 mt-1 ml-1 mb-1 pl-4 py-1 items-center rounded-full bg-gray-200 text-sm font-normal text-black flex items-center",
+        props.selected ? "border border-gray-600" : "",
+        "inline-flex h-7 mt-1 ml-1 mb-1 pl-4 py-1 rounded-full bg-gray-200 text-sm font-normal text-black items-center",
         props.disabled ? "pr-4" : "pr-2",
       )}
+      onMouseEnter={() => {
+        props.setItemToRemove(props.item);
+        props.setSelectedItemIndex(undefined);
+      }}
+      onMouseLeave={() => {
+        props.setItemToRemove(undefined);
+      }}
     >
       {props.item.label}
       {!props.disabled && (
         <button
           data-testid="badgeButton"
           type="button"
-          className="ml-2 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-gray-500 bg-gray-400 hover:bg-gray-500 text-white focus:bg-msg-red focus:text-white focus:outline-none"
+          className={classNames(
+            props.selected ? "bg-msg-red text-gray-50" : "bg-gray-400",
+            "ml-2 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full  text-white focus:outline-none",
+          )}
           onClick={(event) => {
             event.stopPropagation();
             if (!props.disabled) {

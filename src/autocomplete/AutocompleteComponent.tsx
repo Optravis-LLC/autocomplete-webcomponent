@@ -121,9 +121,8 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
           }
         }}
         onKeyDown={(event) => {
-          console.log("got event", event);
-
           if (event.code === "ArrowDown") {
+            event.preventDefault();
             if (selectedItemIndex === undefined) {
               const firstNotSelectedItem = props.items.findIndex((item) => !item.selected);
               setSelectedItemIndex(firstNotSelectedItem);
@@ -133,6 +132,8 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
             }
           }
           if (event.code === "ArrowUp") {
+            event.preventDefault();
+            event.stopPropagation();
             if (selectedItemIndex === undefined) {
               const firstNotSelectedItem = props.items.findLastIndex((item) => !item.selected);
               setSelectedItemIndex(firstNotSelectedItem);
@@ -143,10 +144,13 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
             }
           }
           if (event.code === "Enter" && selectedItemIndex !== undefined) {
+            event.preventDefault();
             const itemToAdd = props.items.at(selectedItemIndex);
             itemToAdd && addItem(itemToAdd);
+            setSearchTerm("");
           }
-          if (event.code === "Backspace") {
+          if (event.code === "Backspace" && searchTerm === "") {
+            setSelectedItemIndex(undefined);
             if (itemToRemove) {
               removeItem(itemToRemove);
               setItemToRemove(undefined);
@@ -166,7 +170,15 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
           )}
         >
           {selectedItemsToShowInBadges.map((item) => (
-            <BadgeComponent key={item.id} item={item} onRemove={removeItem} disabled={disabled} />
+            <BadgeComponent
+              key={item.id}
+              item={item}
+              onRemove={removeItem}
+              disabled={disabled}
+              selected={item.id === itemToRemove?.id}
+              setItemToRemove={setItemToRemove}
+              setSelectedItemIndex={setSelectedItemIndex}
+            />
           ))}
           {!disabled && (
             <span className="h-[36px] w-[240px] inline-block">
@@ -178,6 +190,8 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
                 className="w-full ml-3 p-0 align-middle h-full border-transparent focus:border-transparent focus:ring-0 text-sm bg-transparent"
                 onChange={(event) => {
                   if (event.target) {
+                    setItemToRemove(undefined);
+                    setSelectedItemIndex(undefined);
                     setSearchTerm(event.target.value);
                   }
                 }}
@@ -198,6 +212,8 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
               maximumItemsToRender={props.maximumItemsToRender}
               selectedItemIndex={selectedItemIndex}
               setSelectedIndex={setSelectedItemIndex}
+              itemToRemove={itemToRemove}
+              setItemToRemove={setItemToRemove}
             />
           )}
         </div>
