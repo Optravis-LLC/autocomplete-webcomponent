@@ -4,11 +4,11 @@ import { classNames } from "../utils/StylingUtil";
 
 interface AutocompleteListProps {
   items: Array<AutocompleteItemModel>;
+  selectedItemIndex?: number;
+  setSelectedIndex: (newIndex?: number) => void;
   searchTerm: string;
   onAdd: (item: AutocompleteItemModel) => void;
   isOpen: boolean;
-  actionItem?: string;
-  onActionItem?: () => void;
   maximumItemsToRender?: number;
 }
 
@@ -26,34 +26,26 @@ export const AutocompleteListComponent = (props: AutocompleteListProps) => {
   if (!props.isOpen || !isListVisible) return <></>;
 
   return (
-    <div className="absolute w-full grid border-gray-300 shadow-sm border rounded-md text-sm my-1 mt-px z-50 overflow-hidden" data-testid="AutocompleteList">
-      {props.actionItem && (
-        <div
-          key="action-item"
-          className="block pl-4 py-1 cursor-pointer hover:bg-gray-100 text-gray-900 select-none"
-          onClick={() => {
-            if (props.onActionItem) {
-              props.onActionItem();
-            }
-          }}
-        >
-          {props.actionItem}
-        </div>
-      )}
-      {reducedItems.map((item) => {
+    <div
+      className="absolute w-full grid border-gray-300 shadow-sm border rounded-md text-sm my-1 mt-px z-50 overflow-hidden"
+      data-testid="AutocompleteList"
+    >
+      {reducedItems.map((item, displayedItemIndex) => {
         return (
           <div
             className={classNames(
+              !item.selected && props.selectedItemIndex === displayedItemIndex ? "bg-msg-red text-gray-50" : "",
               "block pl-4 py-1 select-none bg-white",
-              !item.selected && !item.disabled ? "cursor-pointer hover:bg-msg-red hover:text-gray-50 text-gray-700" : "text-gray-300",
+              !item.selected && !item.disabled ? "cursor-pointer text-gray-700" : "text-gray-300",
             )}
             key={item.id}
             onClick={() => {
-              console.log("here", { item, props });
               if (!item.disabled) {
                 return props.onAdd(item);
               }
             }}
+            onMouseEnter={() => props.setSelectedIndex(displayedItemIndex)}
+            onMouseLeave={() => props.setSelectedIndex(undefined)}
           >
             {item.label}
           </div>

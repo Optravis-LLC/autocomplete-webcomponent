@@ -31,13 +31,15 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedItemIndex, setSelectedItemIndex] = useState<number>();
+  const [itemToRemove, setItemToRemove] = useState<AutocompleteItemModel>();
+
   const [selectedItems, setSelectedItems] = useState(props.initSelectedItems || props.items.filter((item) => item.selected));
   const autoCompleteRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const onClickOutside = useDetectOutsideClick(autoCompleteRef);
   onClickOutside.subscribe({
     next() {
-      console.log("click outside trigger");
       setIsOpen(false);
       setIsFocused(false);
       setSearchTerm("");
@@ -118,6 +120,42 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
             inputRef.current?.focus();
           }
         }}
+        onKeyDown={(event) => {
+          console.log("got event", event);
+
+          if (event.code === "ArrowDown") {
+            if (selectedItemIndex === undefined) {
+              const firstNotSelectedItem = props.items.findIndex((item) => !item.selected);
+              setSelectedItemIndex(firstNotSelectedItem);
+            } else {
+              const nextNotSelectedItem = props.items.slice(selectedItemIndex + 1).findIndex((item) => !item.selected) + selectedItemIndex + 1;
+              setSelectedItemIndex(nextNotSelectedItem);
+            }
+          }
+          if (event.code === "ArrowUp") {
+            if (selectedItemIndex === undefined) {
+              const firstNotSelectedItem = props.items.findLastIndex((item) => !item.selected);
+              setSelectedItemIndex(firstNotSelectedItem);
+            } else {
+              const nextNotSelectedItem = props.items.slice(0, selectedItemIndex).findLastIndex((item) => !item.selected);
+              const firstNotSelectedItem = props.items.findIndex((item) => !item.selected);
+              setSelectedItemIndex(nextNotSelectedItem === -1 ? firstNotSelectedItem : nextNotSelectedItem);
+            }
+          }
+          if (event.code === "Enter" && selectedItemIndex !== undefined) {
+            const itemToAdd = props.items.at(selectedItemIndex);
+            itemToAdd && addItem(itemToAdd);
+          }
+          if (event.code === "Backspace") {
+            if (itemToRemove) {
+              removeItem(itemToRemove);
+              setItemToRemove(undefined);
+            } else {
+              const newItemToRemove = selectedItemsToShowInBadges.at(-1);
+              setItemToRemove(newItemToRemove);
+            }
+          }
+        }}
         className="w-full tooltip"
       >
         <div
@@ -158,6 +196,8 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
               onAdd={addItem}
               isOpen={isOpen}
               maximumItemsToRender={props.maximumItemsToRender}
+              selectedItemIndex={selectedItemIndex}
+              setSelectedIndex={setSelectedItemIndex}
             />
           )}
         </div>
