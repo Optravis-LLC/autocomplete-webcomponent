@@ -5,6 +5,7 @@ import { DisabledTextComponent } from "./components/DisabledTextComponent";
 import { SimpleTextInputComponent } from "./components/SimpleTextInputComponent";
 import { SubmittableContentComponent } from "./components/SubmittableContentComponent";
 import { useDetectOutsideClick } from "./hooks/useDetectOutsideClick";
+import { useFilteredList } from "./hooks/useFilteredList";
 import { AutocompleteItemModel } from "./models/AutocompleteItemModel";
 import { classNames } from "./utils/StylingUtil";
 
@@ -44,6 +45,11 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
       setIsFocused(false);
       setSearchTerm("");
     },
+  });
+  const { reducedItems, setMaxItemsToRender, maxItemsToRender } = useFilteredList({
+    items: props.items,
+    searchTerm,
+    maximumItemsToRender: props.maximumItemsToRender ?? 20,
   });
 
   const removeItem = (itemToRemove: AutocompleteItemModel) => {
@@ -124,10 +130,10 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
           if (event.code === "ArrowDown") {
             event.preventDefault();
             if (selectedItemIndex === undefined) {
-              const firstNotSelectedItem = props.items.findIndex((item) => !item.selected);
+              const firstNotSelectedItem = reducedItems.findIndex((item) => !item.selected);
               setSelectedItemIndex(firstNotSelectedItem);
             } else {
-              const nextNotSelectedItem = props.items.slice(selectedItemIndex + 1).findIndex((item) => !item.selected) + selectedItemIndex + 1;
+              const nextNotSelectedItem = reducedItems.slice(selectedItemIndex + 1).findIndex((item) => !item.selected) + selectedItemIndex + 1;
               setSelectedItemIndex(nextNotSelectedItem);
             }
           }
@@ -135,17 +141,17 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
             event.preventDefault();
             event.stopPropagation();
             if (selectedItemIndex === undefined) {
-              const firstNotSelectedItem = props.items.findLastIndex((item) => !item.selected);
+              const firstNotSelectedItem = reducedItems.findLastIndex((item) => !item.selected);
               setSelectedItemIndex(firstNotSelectedItem);
             } else {
-              const nextNotSelectedItem = props.items.slice(0, selectedItemIndex).findLastIndex((item) => !item.selected);
-              const firstNotSelectedItem = props.items.findIndex((item) => !item.selected);
+              const nextNotSelectedItem = reducedItems.slice(0, selectedItemIndex).findLastIndex((item) => !item.selected);
+              const firstNotSelectedItem = reducedItems.findIndex((item) => !item.selected);
               setSelectedItemIndex(nextNotSelectedItem === -1 ? firstNotSelectedItem : nextNotSelectedItem);
             }
           }
           if (event.code === "Enter" && selectedItemIndex !== undefined) {
             event.preventDefault();
-            const itemToAdd = props.items.at(selectedItemIndex);
+            const itemToAdd = reducedItems.at(selectedItemIndex);
             itemToAdd && addItem(itemToAdd);
             setSearchTerm("");
           }
@@ -207,6 +213,7 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
               key="list"
               searchTerm={searchTerm}
               items={props.items}
+              displayedItems={reducedItems}
               onAdd={addItem}
               isOpen={isOpen}
               maximumItemsToRender={props.maximumItemsToRender}
@@ -214,6 +221,8 @@ export const AutocompleteComponent = (props: AutocompleteProps) => {
               setSelectedIndex={setSelectedItemIndex}
               itemToRemove={itemToRemove}
               setItemToRemove={setItemToRemove}
+              maxItemsToRender={maxItemsToRender}
+              setMaxItemsToRender={setMaxItemsToRender}
             />
           )}
         </div>

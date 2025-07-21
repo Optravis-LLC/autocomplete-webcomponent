@@ -5,11 +5,18 @@ import { AutocompleteItemModel } from "../autocomplete/models/AutocompleteItemMo
 
 export const WebcomponentWrapper = () => {
   const [items, setItems] = useState<Array<AutocompleteItemModel>>([
-    { id: "A", label: "A Test", disabled: false, selected: false },
-    { id: "B", label: "B Test", disabled: false, selected: false },
-    { id: "C", label: "C", disabled: false, selected: false },
-    { id: "D", label: "D", disabled: false, selected: false },
-    { id: "E", label: "E", disabled: false, selected: false },
+    { id: "1", label: "January", selected: false, disabled: false },
+    { id: "2", label: "February", selected: false, disabled: false },
+    { id: "3", label: "March", selected: false, disabled: false },
+    { id: "4", label: "April", selected: false, disabled: false },
+    { id: "5", label: "May", selected: false, disabled: false },
+    { id: "6", label: "June", selected: false, disabled: false },
+    { id: "7", label: "July", selected: false, disabled: false },
+    { id: "8", label: "August", selected: false, disabled: false },
+    { id: "9", label: "September", selected: false, disabled: false },
+    { id: "10", label: "October", selected: false, disabled: false },
+    { id: "11", label: "November", selected: false, disabled: false },
+    { id: "12", label: "December", selected: false, disabled: false },
   ]);
 
   return (
